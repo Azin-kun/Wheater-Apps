@@ -1,0 +1,27 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>
+        Weather Now
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <div id="container" class="ion-padding">
+    <div *ngFor="let w of weather.weather" class="ion-text-center">
+      <ion-card>
+        <ion-card-header>
+          <h2 class="ion-text-center">{{temp}} °C</h2>
+          <ion-card-title>
+            <img src="http://openweathermap.org/img/wn/{{w.icon}}@2x.png" height="180px" alt="{{w.description}}" />
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <h3>{{city}}</h3>
+          <h4>{{w.main}} (<small>{{w.description}}</small>)</h4>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>
