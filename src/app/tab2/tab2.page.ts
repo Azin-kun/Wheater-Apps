@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ForecastWeatherService } from '../services/weather.service';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -8,8 +9,9 @@ import { ForecastWeatherService } from '../services/weather.service';
 })
 export class Tab2Page implements OnInit {
   public forecastData: any[] = [];
+  weather: any;
 
-  constructor(private forecastService: ForecastWeatherService) { }
+  constructor(private forecastService: ForecastWeatherService, private router: Router) { }
 
   ngOnInit(): void {
     this.forecastService.get5DayForecastByCity('Sleman').subscribe((result: any) => {
@@ -27,10 +29,24 @@ export class Tab2Page implements OnInit {
     const month = monthNames[date.getMonth()]; // Ambil nama bulan dari array monthNames
     let hour = date.getHours();
     const minute = date.getMinutes().toString().padStart(2, '0');
-    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const ampm = hour >= 12? 'PM' : 'AM';
     hour = hour % 12 || 12; // Convert 24-hour format to 12-hour format
     return `${day} ${month} - ${hour}:${minute} ${ampm}`;
   }
-}
 
- 
+  detailpage(forecast: any): void {
+    let weather = {
+      date: this.formatDateTime(forecast.dt_txt),
+      temp: forecast.main.temp,
+      main: forecast.weather[0].main,
+      desc: forecast.weather[0].description,
+      icon: forecast.weather[0].icon
+    }
+    let extras: NavigationExtras = {
+      queryParams: {
+        special: JSON.stringify(weather)
+      }
+    };
+    this.router.navigate(['detail'], extras);
+  }
+}
